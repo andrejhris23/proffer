@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: hris
+      POSTGRES_PASSWORD: nomiss
+      POSTGRES_DB: proffer
+
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/posgressql
+  
+volumes:
+  db:
