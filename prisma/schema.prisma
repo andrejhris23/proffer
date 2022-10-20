@@ -37,12 +37,17 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+  AGENT
+  TALENT
+}
+
 model User {
   id           String        @id @default(cuid())
   name         String?
   email        String?       @unique
   image        String?
-  role         String?
+  role         Role?
   accounts     Account[]
   sessions     Session[]
   offers       Offer[]
@@ -57,12 +62,20 @@ model Offer {
   type         String
   payRange     String
   website      String?
+  createdAt    DateTime      @default(now())
+  validUntil   DateTime
   applications Application[]
   user         User          @relation(fields: [agentId], references: [id])
 }
 
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model Application {
-  id           String  @id @default(cuid())
+  id           String   @id @default(cuid())
   offerId      String
   talentId     String
   firstName    String
@@ -71,9 +84,10 @@ model Application {
   contactMail  String
   cvUrl        String
   portfolioUrl String?
-  status       String  @default("pending")
-  user         User    @relation(fields: [talentId], references: [id])
-  offer        Offer   @relation(fields: [offerId], references: [id])
+  createdAt    DateTime @default(now())
+  status       Status   @default(PENDING)
+  user         User     @relation(fields: [talentId], references: [id])
+  offer        Offer    @relation(fields: [offerId], references: [id])
 }
 
 model VerificationToken {
