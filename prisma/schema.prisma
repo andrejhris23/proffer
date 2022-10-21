@@ -58,6 +58,7 @@ model Offer {
   id           String        @id @default(cuid())
   agentId      String
   title        String
+  category     String
   description  String
   type         String
   payRange     String
@@ -87,7 +88,7 @@ model Application {
   createdAt    DateTime @default(now())
   status       Status   @default(PENDING)
   user         User     @relation(fields: [talentId], references: [id])
-  offer        Offer    @relation(fields: [offerId], references: [id])
+  offer        Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
