@@ -42,7 +42,7 @@ const Sidebar = ({mobileMenuOpen, setMobileMenuOpen}: Props) => {
           </div>
           <div className="mt-6 w-full flex-1 space-y-1 px-2">
             {navigation.map((item) => (
-              <SidebarItem item={item} mobile={false}/>
+              <SidebarItem item={item} mobile={false} key={item.name}/>
             ))}
           </div>
         </div>
@@ -104,7 +104,7 @@ const Sidebar = ({mobileMenuOpen, setMobileMenuOpen}: Props) => {
                   <nav className="flex h-full flex-col">
                     <div className="space-y-1">
                       {navigation.map((item) => (
-                        <SidebarItem item={item} mobile={true}/>
+                        <SidebarItem item={item} mobile={true} key={item.name}/>
                       ))}
                     </div>
                   </nav>

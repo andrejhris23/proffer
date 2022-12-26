@@ -17,7 +17,6 @@ const SidebarItem = ({item, mobile}: {item: Item, mobile: boolean}) => {
 
   return (
     <Link
-      key={name}
       href={href}
       className={classNames(
         current ? 'bg-rose-800 text-white' : 'text-indigo-100 hover:bg-rose-800 hover:text-white',
