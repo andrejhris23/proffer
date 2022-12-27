@@ -26,6 +26,7 @@ const checkIfRoleIsAgent = (ctx: Context) => {
 }
 
 export const offerRouter = router({
+
   create: protectedProcedure
   .input(
     z.object({
@@ -54,6 +55,7 @@ export const offerRouter = router({
       },
     });
   }),
+
   update: protectedProcedure
   .input(
     z.object({
@@ -79,6 +81,7 @@ export const offerRouter = router({
       }
     });
   }),
+
   delete: protectedProcedure
   .input(
     z.object({
@@ -93,6 +96,7 @@ export const offerRouter = router({
       }
     });
   }),
+  
   getAll: protectedProcedure
   .query(async({ ctx }) => {
     return await ctx.prisma.offer.findMany({

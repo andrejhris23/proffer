@@ -17,6 +17,7 @@ const defaultAgentValidator = Prisma.validator<Prisma.UserSelect>()({
 });
 
 export const userRouter = router({
+  
   getAgent: protectedProcedure
   .query(async ({ ctx }) => {
     return await ctx.prisma.user.findUnique({
@@ -26,6 +27,7 @@ export const userRouter = router({
       select: defaultAgentValidator
     });
   }),
+
   getTalent: protectedProcedure
   .query(async ({ ctx }) => {
     return await ctx.prisma.user.findUnique({
@@ -35,6 +37,7 @@ export const userRouter = router({
       select: defaultTalentValidator
     });
   }),
+
   setRoleAsAgent: protectedProcedure
   .mutation(async ({ ctx }) => {
     if(ctx.session.user.role) {
@@ -55,6 +58,7 @@ export const userRouter = router({
 
     return 'Successfully set role to Agent!';
   }),
+
   setRoleAsTalent: protectedProcedure
   .mutation(async ({ ctx }) => {
     if(ctx.session.user.role) {
