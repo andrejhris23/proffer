@@ -103,5 +103,21 @@ export const offerRouter = router({
       select: defaultOfferValidator
     });
   }),
+
+  filterByCategory: protectedProcedure
+  .input(
+    z.object({
+      category: z.string()
+    })
+  )
+  .query(async({ ctx, input }) => {
+    return await ctx.prisma.offer.findMany({
+      where: {
+        category: input.category
+      },
+      select: defaultOfferValidator
+    });
+  }),
+  
   // TODO: add filters when quering orders
 })
