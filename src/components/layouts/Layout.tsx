@@ -6,7 +6,7 @@ const Layout = ({children} : {children: ReactNode}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="flex h-full">
+    <div className="flex min-h-screen">
       <Sidebar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen}/>
       {/* Content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
