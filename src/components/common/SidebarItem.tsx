@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import classNames from '@/src/utils/tailwind';
+import { useRouter } from 'next/router';
 
 // TODO: narrow down types only to available routes with unions (instead of just name: string)
 type Item = {
@@ -9,11 +10,12 @@ type Item = {
     title?: string;
     titleId?: string;
   }) => JSX.Element,
-  current: boolean,
 }
 
 const SidebarItem = ({item, mobile}: {item: Item, mobile: boolean}) => {
-  const { name, href, Icon, current} = item;
+  const router = useRouter();
+  const { name, href, Icon } = item;
+  let current = router.pathname === href ? true : false;
 
   return (
     <Link
