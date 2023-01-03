@@ -10,14 +10,17 @@ import {
   UserGroupIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import { useSession } from 'next-auth/react';
 
-const navigation = [
-  { name: 'Home', href: '#', Icon: HomeIcon, current: false },
-  { name: 'All Files', href: '#', Icon: Squares2X2IconOutline, current: false },
-  { name: 'Photos', href: '#', Icon: PhotoIcon, current: true },
-  { name: 'Shared', href: '#', Icon: UserGroupIcon, current: false },
-  { name: 'Albums', href: '#', Icon: RectangleStackIcon, current: false },
-  { name: 'Settings', href: '#', Icon: CogIcon, current: false },
+const agentRoutes = [
+  { name: 'Home', href: '/home', Icon: HomeIcon },
+  { name: 'My Offers', href: '/offers', Icon: HomeIcon },
+  { name: 'Settings', href: '/settings', Icon: HomeIcon }
+]
+
+const talentRoutes = [
+  { name: 'Home', href: '/home', Icon: HomeIcon },
+
 ];
 
 type Props = {
@@ -27,6 +30,14 @@ type Props = {
 
 // TODO: this sidebar should accept navItems as props and loop over them creating a SidebarItem reusable component
 const Sidebar = ({mobileMenuOpen, setMobileMenuOpen}: Props) => {
+  const { data: session } = useSession();
+  let routes: typeof agentRoutes = [];
+  if(session?.user?.role === 'AGENT') {
+    routes = agentRoutes;
+  } 
+  if(session?.user?.role === 'TALENT') {
+    routes = talentRoutes;
+  }
 
   return (
     <>
@@ -41,7 +52,7 @@ const Sidebar = ({mobileMenuOpen, setMobileMenuOpen}: Props) => {
             />
           </div>
           <div className="mt-6 w-full flex-1 space-y-1 px-2">
-            {navigation.map((item) => (
+            {routes.map((item) => (
               <SidebarItem item={item} mobile={false} key={item.name}/>
             ))}
           </div>
@@ -103,7 +114,7 @@ const Sidebar = ({mobileMenuOpen, setMobileMenuOpen}: Props) => {
                 <div className="mt-5 h-0 flex-1 overflow-y-auto px-2">
                   <nav className="flex h-full flex-col">
                     <div className="space-y-1">
-                      {navigation.map((item) => (
+                      {routes.map((item) => (
                         <SidebarItem item={item} mobile={true} key={item.name}/>
                       ))}
                     </div>
