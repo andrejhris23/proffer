@@ -1,6 +1,7 @@
-import { router, protectedProcedure } from '../trpc';
+import { router, protectedProcedure, agentProcedure, talentProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { Prisma, Role } from '@prisma/client';
+import { z } from 'zod';
 
 const defaultTalentValidator = Prisma.validator<Prisma.UserSelect>()({
   id: true,
@@ -18,7 +19,7 @@ const defaultAgentValidator = Prisma.validator<Prisma.UserSelect>()({
 
 export const userRouter = router({
   
-  getAgent: protectedProcedure
+  getAgent: agentProcedure
   .query(async ({ ctx }) => {
     return await ctx.prisma.user.findUnique({
       where: {
@@ -28,7 +29,7 @@ export const userRouter = router({
     });
   }),
 
-  getTalent: protectedProcedure
+  getTalent: talentProcedure
   .query(async ({ ctx }) => {
     return await ctx.prisma.user.findUnique({
       where: {
