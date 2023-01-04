@@ -32,7 +32,41 @@ const isAuthed = t.middleware(({ctx, next }) => {
   });
 });
 
+const isAdmin = t.middleware(({ctx, next}) => {
+  if(ctx.session?.user?.role !== 'AGENT') {
+    throw new TRPCError({ 
+      code: 'FORBIDDEN', 
+      message: 'You are not an admin!'
+     });
+  }
+
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session. user },
+    },
+  });
+});
+
+const isTalent = t.middleware(({ctx, next}) => {
+  if(ctx.session?.user?.role !== 'TALENT') {
+    throw new TRPCError({ 
+      code: 'FORBIDDEN', 
+      message: 'You are not an admin!'
+     });
+  }
+
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session. user },
+    },
+  });
+});
+
+
+
 /**
  * Protected procedure
  **/
 export const protectedProcedure = t.procedure.use(isAuthed);
+export const agentProcedure = protectedProcedure.use(isAdmin);
+export const talentProcedure = protectedProcedure.use(isTalent);
