@@ -2,20 +2,17 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react';
 import SidebarItem from './SidebarItem';
 import {
-  CogIcon,
   HomeIcon,
-  PhotoIcon,
-  RectangleStackIcon,
-  Squares2X2Icon as Squares2X2IconOutline,
-  UserGroupIcon,
   XMarkIcon,
+  Cog6ToothIcon,
+  BriefcaseIcon
 } from '@heroicons/react/24/outline'
 import { useSession } from 'next-auth/react';
 
 const agentRoutes = [
   { name: 'Home', href: '/home', Icon: HomeIcon },
-  { name: 'My Offers', href: '/offers', Icon: HomeIcon },
-  { name: 'Settings', href: '/settings', Icon: HomeIcon }
+  { name: 'My Offers', href: '/offers', Icon: BriefcaseIcon },
+  { name: 'Settings', href: '/settings', Icon: Cog6ToothIcon }
 ]
 
 const talentRoutes = [
