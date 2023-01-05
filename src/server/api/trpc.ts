@@ -1,12 +1,38 @@
 import { initTRPC, TRPCError } from '@trpc/server';
-import type { Context } from './context';
 import superjson from 'superjson';
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { Session } from 'next-auth';
+import { getServerAuthSession } from '../auth';
+import { prisma } from '../db';
 
-const t = initTRPC.context<Context>().create({
-  transformer: superjson,
-  errorFormatter({ shape }) {
-    return shape;
-  }
+type CreateContextOptions = {
+  session: Session | null;
+}
+
+const createInnerTRPCContext = async (opts: CreateContextOptions) => {
+  return {
+    session: opts.session,
+    prisma
+  };
+};
+
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  const { req, res } = opts;
+
+  const session = await getServerAuthSession({ req, res });
+
+  return await createInnerTRPCContext({
+    session,
+  });
+};
+
+const t = initTRPC
+  .context<Awaited<ReturnType<typeof createTRPCContext>>>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape }) {
+      return shape;
+    }
 });
 
 export const router = t.router;
@@ -17,7 +43,7 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 /**
- * Reusable middlware to ensure users are logged in
+ * Reusable middleware to ensure users are logged in
  **/
 
 const isAuthed = t.middleware(({ctx, next }) => {
@@ -62,11 +88,12 @@ const isTalent = t.middleware(({ctx, next}) => {
   });
 });
 
-
-
 /**
  * Protected procedure
  **/
 export const protectedProcedure = t.procedure.use(isAuthed);
+/**
+ * Protected procedures with checked roles
+ */
 export const agentProcedure = protectedProcedure.use(isAdmin);
 export const talentProcedure = protectedProcedure.use(isTalent);

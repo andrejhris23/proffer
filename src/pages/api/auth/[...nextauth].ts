@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from "@/src/server/db/client";
+import { prisma } from "@/src/server/db";
 
 export const authOptions: NextAuthOptions = {
   // Include user id and role on session

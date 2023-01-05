@@ -2,7 +2,7 @@ import { router, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { Prisma } from '@prisma/client';
 import z from 'zod';
-import type { Context } from '../context';
+import type { Context } from '../../trpc/context';
 
 const defaultOfferValidator = Prisma.validator<Prisma.OfferSelect>()({
   id: true, 
