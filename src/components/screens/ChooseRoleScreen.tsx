@@ -1,12 +1,12 @@
 import Alert from '../common/Alert';
-import { trpc } from '@/src/utils/trpc';
+import { api } from '@/src/utils/api';
 import { useRouter } from 'next/router';
 
 // TODO: add styling 
 const ChooseRoleScreen = () => {
 
-  const agentRoleMutation = trpc.user.setRoleAsAgent.useMutation();
-  const talentRoleMutation = trpc.user.setRoleAsTalent.useMutation();
+  const agentRoleMutation = api.user.setRoleAsAgent.useMutation();
+  const talentRoleMutation = api.user.setRoleAsTalent.useMutation();
   const router = useRouter();
 
   const handleAgentRole = () => {
