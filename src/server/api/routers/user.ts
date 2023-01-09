@@ -80,4 +80,13 @@ export const userRouter = router({
 
     return 'Successfully set role to Talent!';
   }),
+
+  update: protectedProcedure
+  .input(z.object({
+    
+  }))
+  .mutation(async ({ ctx }) => {
+
+  })
 });
+ 
