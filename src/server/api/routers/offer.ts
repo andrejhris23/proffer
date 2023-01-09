@@ -1,8 +1,6 @@
-import { router, protectedProcedure } from '../trpc';
-import { TRPCError } from '@trpc/server';
+import { router, protectedProcedure, agentProcedure, talentProcedure } from '../trpc';
 import { Prisma } from '@prisma/client';
 import z from 'zod';
-import type { Context } from '../../trpc/context';
 
 const defaultOfferValidator = Prisma.validator<Prisma.OfferSelect>()({
   id: true, 
@@ -16,18 +14,9 @@ const defaultOfferValidator = Prisma.validator<Prisma.OfferSelect>()({
   validUntil: true,
 });
 
-const checkIfRoleIsAgent = (ctx: Context) => {
-  if(ctx.session?.user?.role !== 'AGENT') {
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'you have to be an agent in order to create an offer'
-    });
-  }
-}
-
 export const offerRouter = router({
 
-  create: protectedProcedure
+  create: agentProcedure
   .input(
     z.object({
       title: z.string(),
@@ -40,8 +29,6 @@ export const offerRouter = router({
     })
     )
   .mutation(async ({ ctx, input }) => {
-    checkIfRoleIsAgent(ctx);
-
     return await ctx.prisma.offer.create({
       data: {
         title: input.title,
@@ -56,7 +43,7 @@ export const offerRouter = router({
     });
   }),
 
-  update: protectedProcedure
+  update: agentProcedure
   .input(
     z.object({
       id: z.string().uuid(),
@@ -69,9 +56,7 @@ export const offerRouter = router({
       validUntil: z.date()
   }))
   .mutation(async ({ ctx, input }) => {
-    checkIfRoleIsAgent(ctx)
     const {id, ...rest} = input;
-
     return await ctx.prisma.offer.update({
       where: {
         id
@@ -82,14 +67,12 @@ export const offerRouter = router({
     });
   }),
 
-  delete: protectedProcedure
+  delete: agentProcedure
   .input(
     z.object({
      offerId: z.string().uuid()
     }))
   .mutation(async ({ ctx, input }) => {
-    checkIfRoleIsAgent(ctx);
-
     await ctx.prisma.offer.delete({
       where: {
         id: input.offerId
