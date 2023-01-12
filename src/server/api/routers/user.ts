@@ -14,7 +14,11 @@ const defaultAgentValidator = Prisma.validator<Prisma.UserSelect>()({
   id: true,
   email: true,
   image: true,
-  offers: true
+  offers: true,
+  firstName: true,
+  lastName: true,
+  bio: true,
+  website: true,
 });
 
 export const userRouter = router({
